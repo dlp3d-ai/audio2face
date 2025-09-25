@@ -3,8 +3,8 @@ FROM ubuntu:20.04
 # Install apt packages
 RUN apt-get update && \
     apt-get install -y \
-        wget curl git vim \
-        make \
+        wget curl git vim unzip \
+        gcc g++ make \
     && \
     apt-get autoclean
 
