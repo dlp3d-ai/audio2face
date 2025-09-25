@@ -1,0 +1,12 @@
+<!-- templates/log_template.html -->
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>日志内容</title>
+</head>
+<body>
+    <h1>日志内容</h1>
+    <pre>{{ log_content | safe }}</pre>  <!-- 使用 | safe 过滤器 -->
+</body>
+</html>

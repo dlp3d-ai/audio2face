@@ -1,0 +1,80 @@
+image: registry.sensetime.com/zoetrope/library/docker:19.03.15_aws
+
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+
+stages:
+  - lint
+  - docstring
+  - build
+  - test
+
+lint:
+  interruptible: true
+  image: registry.sensetime.com/zoetrope/ruff:0.9-alpine
+  stage: lint
+  script:
+    - ruff --version
+    - ruff check
+
+docstring:
+  interruptible: true
+  image: registry.sensetime.com/zoetrope/lint:ubuntu1804_x64_py38
+  stage: docstring
+  script:
+    - source /root/miniconda3/etc/profile.d/conda.sh
+    - conda activate lint
+    - interrogate -vinmMI --ignore-init-method --ignore-module --ignore-nested-functions --ignore-regex "__repr__" -f 60 audio2face/
+
+test:
+  interruptible: true
+  stage: test
+  image: registry.sensetime.com/zoetrope/her:audio2face-cpu-dev
+  needs:
+    - lint
+  script:
+    - source /opt/miniconda/etc/profile.d/conda.sh
+    - conda activate audio2face
+    - pip install .
+    - mkdir -p input
+    - wget -q http://file.bj.zoe.sensetime.com/resources/gaoyang3/3DAC/audio2face/input/test_audio.wav -O input/test_audio.wav
+    - wget -q http://file.bj.zoe.sensetime.com/resources/gaoyang3/3DAC/audio2face/input/test_feature.npy -O input/test_feature.npy
+    - mkdir -p weights/
+    - wget -q http://file.bj.zoe.sensetime.com/resources/gaoyang3/3DAC/audio2face/weights/unitalker_v0.4.0_base.onnx -O weights/unitalker_v0.4.0_base.onnx
+    - pytest tests --log-cli-level=ERROR
+
+build:docker_image_cpu:
+  interruptible: true
+  stage: build
+  needs:
+    - lint
+  script:
+    - aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin 220402651686.dkr.ecr.ap-southeast-1.amazonaws.com
+    - docker login registry.sensetime.com --username ${CI_REGISTRY_USERNAME} --password ${CI_REGISTRY_PASSWD}
+    - DOCKER_BUILDKIT=1 docker build --no-cache -t local:temp -f ./dockerfiles/Dockerfile-cpu .
+    - docker tag local:temp registry.sensetime.com/zoetrope/her:audio2face-cpu-${CI_COMMIT_TAG}
+    - echo "Pushing image to registry.sensetime.com/zoetrope/her:audio2face-cpu-${CI_COMMIT_TAG}"
+    - docker push registry.sensetime.com/zoetrope/her:audio2face-cpu-${CI_COMMIT_TAG}
+    - docker tag local:temp 220402651686.dkr.ecr.ap-southeast-1.amazonaws.com/dlp3d:audio2face-cpu-${CI_COMMIT_TAG}
+    - echo "Pushing image to 220402651686.dkr.ecr.ap-southeast-1.amazonaws.com/dlp3d:audio2face-cpu-${CI_COMMIT_TAG}"
+    - docker push 220402651686.dkr.ecr.ap-southeast-1.amazonaws.com/dlp3d:audio2face-cpu-${CI_COMMIT_TAG}
+  only:
+    - tags
+
+build:docker_image_cuda12:
+  interruptible: true
+  stage: build
+  needs:
+    - lint
+  script:
+    - aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin 220402651686.dkr.ecr.ap-southeast-1.amazonaws.com
+    - docker login registry.sensetime.com --username ${CI_REGISTRY_USERNAME} --password ${CI_REGISTRY_PASSWD}
+    - DOCKER_BUILDKIT=1 docker build --no-cache -t local:temp -f ./dockerfiles/Dockerfile-cuda12 .
+    - docker tag local:temp registry.sensetime.com/zoetrope/her:audio2face-cuda12-${CI_COMMIT_TAG}
+    - echo "Pushing image to registry.sensetime.com/zoetrope/her:audio2face-cuda12-${CI_COMMIT_TAG}"
+    - docker push registry.sensetime.com/zoetrope/her:audio2face-cuda12-${CI_COMMIT_TAG}
+    - docker tag local:temp 220402651686.dkr.ecr.ap-southeast-1.amazonaws.com/dlp3d:audio2face-cuda12-${CI_COMMIT_TAG}
+    - echo "Pushing image to 220402651686.dkr.ecr.ap-southeast-1.amazonaws.com/dlp3d:audio2face-cuda12-${CI_COMMIT_TAG}"
+    - docker push 220402651686.dkr.ecr.ap-southeast-1.amazonaws.com/dlp3d:audio2face-cuda12-${CI_COMMIT_TAG}
+  only:
+    - tags

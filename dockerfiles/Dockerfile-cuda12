@@ -1,0 +1,86 @@
+FROM registry.sensetime.com/zoetrope/nvidia-cuda:12.2.2-runtime-ubuntu20.04
+
+# Replace apt source
+RUN sed -i "s@http://archive.ubuntu.com@http://mirrors.aliyun.com@g" /etc/apt/sources.list && \
+    rm -Rf /var/lib/apt/lists/*
+
+# Install apt packages
+RUN apt-get update && \
+    apt-get install -y \
+        wget curl git vim \
+        gcc-7 g++-7 make \
+    && \
+    apt-get autoclean
+
+# Set timezone
+ENV DEBIAN_FRONTEND noninteractive
+RUN apt-get update && \
+    apt-get install -yq tzdata && \
+    dpkg-reconfigure -f noninteractive tzdata && \
+    ln -fs /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
+    apt-get autoclean
+
+# Install miniconda
+RUN wget -q \
+    https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh \
+    && bash Miniconda3-latest-Linux-x86_64.sh -b -p /opt/miniconda \
+    && rm -f Miniconda3-latest-Linux-x86_64.sh
+
+# Download protoc
+RUN cd /opt && \
+    wget -q \
+    http://file.bj.zoe.sensetime.com/resources/gaoyang3/3DAC/orchestrator/protoc-31.1-linux-x86_64.tar.gz \
+    && tar -xzf protoc-31.1-linux-x86_64.tar.gz \
+    && rm -f protoc-31.1-linux-x86_64.tar.gz \
+    && chmod +x protoc/bin/protoc
+
+# Download mc
+RUN mkdir -p /opt/minio && \
+    wget -q http://file.bj.zoe.sensetime.com/resources/XRlab/xrmocap/mc --directory-prefix=/opt/minio && \
+    chmod +x /opt/minio/mc
+
+# Update in bashrc
+RUN echo "export CXX=/usr/bin/g++-7" >> /root/.bashrc && \
+    echo "export CC=/usr/bin/gcc-7" >> /root/.bashrc && \
+    echo "source /opt/miniconda/etc/profile.d/conda.sh" >> /root/.bashrc && \
+    echo "conda deactivate" >> /root/.bashrc && \
+    ln -s /usr/bin/g++-7 /usr/bin/g++ && \
+    ln -s /usr/bin/gcc-7 /usr/bin/gcc && \
+    ln -s /opt/protoc/bin/protoc /usr/bin/protoc && \
+    protoc --version
+
+ENV http_proxy=http://10.161.32.26:30200
+ENV https_proxy=http://10.161.32.26:30200
+ENV HTTP_PROXY=http://10.161.32.26:30200
+ENV HTTPS_PROXY=http://10.161.32.26:30200
+
+# Prepare conda env
+RUN . /opt/miniconda/etc/profile.d/conda.sh && \
+    conda config --add channels conda-forge && \
+    conda tos accept && \
+    conda create -n audio2face python=3.10 -y && \
+    conda activate audio2face && \
+    conda install pytorch==2.4.1 \
+        torchvision==0.19.1 torchaudio==2.4.1 \
+        pytorch-cuda=12.1 -c pytorch -c nvidia -y && \
+    pip install toml-to-requirements && \
+    pip cache purge && \
+    conda clean --all
+
+# COPY pyproject.toml and export requirements
+# onnxruntime-gpu requires cudnn9, which is installed by pytorch 2.4.1,
+# do not use an image with cudnn8
+COPY pyproject.toml /opt/pyproject.toml
+RUN . /opt/miniconda/etc/profile.d/conda.sh && \
+    conda activate audio2face && \
+    cd /opt && \
+    toml-to-req --toml-file pyproject.toml --optional-lists dev && \
+    sed -i '/^onnxruntime$/d' requirements.txt && \
+    pip install -r requirements.txt && \
+    pip install onnxruntime-gpu==1.22.0 && \
+    pip cache purge
+
+ENV http_proxy=
+ENV https_proxy=
+ENV HTTP_PROXY=
+ENV HTTPS_PROXY=
