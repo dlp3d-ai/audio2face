@@ -1,14 +1,10 @@
-FROM registry.sensetime.com/zoetrope/nvidia-cuda:12.2.2-runtime-ubuntu20.04
-
-# Replace apt source
-RUN sed -i "s@http://archive.ubuntu.com@http://mirrors.aliyun.com@g" /etc/apt/sources.list && \
-    rm -Rf /var/lib/apt/lists/*
+FROM ubuntu:20.04
 
 # Install apt packages
 RUN apt-get update && \
     apt-get install -y \
-        wget curl git vim \
-        gcc-7 g++-7 make \
+        wget curl git vim unzip \
+        gcc g++ make \
     && \
     apt-get autoclean
 
@@ -27,32 +23,16 @@ RUN wget -q \
     && rm -f Miniconda3-latest-Linux-x86_64.sh
 
 # Download protoc
-RUN cd /opt && \
-    wget -q \
-    http://file.bj.zoe.sensetime.com/resources/gaoyang3/3DAC/orchestrator/protoc-31.1-linux-x86_64.tar.gz \
-    && tar -xzf protoc-31.1-linux-x86_64.tar.gz \
-    && rm -f protoc-31.1-linux-x86_64.tar.gz \
-    && chmod +x protoc/bin/protoc
-
-# Download mc
-RUN mkdir -p /opt/minio && \
-    wget -q http://file.bj.zoe.sensetime.com/resources/XRlab/xrmocap/mc --directory-prefix=/opt/minio && \
-    chmod +x /opt/minio/mc
+RUN mkdir -p /opt/protoc && cd /opt/protoc && \
+    curl -LjO https://github.com/protocolbuffers/protobuf/releases/download/v31.1/protoc-31.1-linux-x86_64.zip \
+    && unzip protoc-31.1-linux-x86_64.zip \
+    && rm -f protoc-31.1-linux-x86_64.zip \
+    && chmod +x bin/protoc
 
 # Update in bashrc
-RUN echo "export CXX=/usr/bin/g++-7" >> /root/.bashrc && \
-    echo "export CC=/usr/bin/gcc-7" >> /root/.bashrc && \
-    echo "source /opt/miniconda/etc/profile.d/conda.sh" >> /root/.bashrc && \
+RUN echo "source /opt/miniconda/etc/profile.d/conda.sh" >> /root/.bashrc && \
     echo "conda deactivate" >> /root/.bashrc && \
-    ln -s /usr/bin/g++-7 /usr/bin/g++ && \
-    ln -s /usr/bin/gcc-7 /usr/bin/gcc && \
-    ln -s /opt/protoc/bin/protoc /usr/bin/protoc && \
-    protoc --version
-
-ENV http_proxy=http://10.161.32.26:30200
-ENV https_proxy=http://10.161.32.26:30200
-ENV HTTP_PROXY=http://10.161.32.26:30200
-ENV HTTPS_PROXY=http://10.161.32.26:30200
+    ln -s /opt/protoc/bin/protoc /usr/bin/protoc
 
 # Prepare conda env
 RUN . /opt/miniconda/etc/profile.d/conda.sh && \
@@ -80,7 +60,17 @@ RUN . /opt/miniconda/etc/profile.d/conda.sh && \
     pip install onnxruntime-gpu==1.22.0 && \
     pip cache purge
 
-ENV http_proxy=
-ENV https_proxy=
-ENV HTTP_PROXY=
-ENV HTTPS_PROXY=
+# COPY code
+COPY . /workspace/audio2face
+# Install code
+RUN . /opt/miniconda/etc/profile.d/conda.sh && \
+    conda activate audio2face && \
+    cd /workspace/audio2face && \
+    pip install . && \
+    pip cache purge
+
+# Set working directory
+WORKDIR /workspace/audio2face
+
+# Set entrypoint
+ENTRYPOINT ["/bin/bash", "-c", "source /opt/miniconda/etc/profile.d/conda.sh && conda activate audio2face && python main.py"]
