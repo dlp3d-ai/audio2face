@@ -7,6 +7,14 @@ from audio2face.utils.config import file2dict
 
 
 def main(args) -> int:
+    """Start the backend server with the given configuration.
+
+    Args:
+        args: Parsed command line arguments containing config_path.
+
+    Returns:
+        int: Exit code, 0 for success.
+    """
     if not os.path.exists('logs'):
         os.makedirs('logs')
     startup_config = file2dict(args.config_path)
@@ -21,13 +29,18 @@ def main(args) -> int:
 
 
 def setup_parser():
+    """Set up command line argument parser for the backend program.
+
+    Returns:
+        argparse.Namespace: Parsed command line arguments.
+    """
     parser = argparse.ArgumentParser('Start the backed program.')
     # server args
     parser.add_argument(
         '--config_path',
         type=str,
         help='Path to the config file, which contains the server info.',
-        default='configs/diamond.py')
+        default='configs/local.py')
     args = parser.parse_args()
     return args
 
