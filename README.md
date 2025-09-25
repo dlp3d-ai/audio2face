@@ -76,7 +76,6 @@ To use Audio2Face, you need to download the ONNX model file and set up the requi
 
 - `weights/`: A folder for storing ONNX model files.
 - `weights/unitalker_v0.4.0_base.onnx`: The main ONNX model file for audio-to-face conversion.
-- The `weights` directory contains the pre-trained model required for inference.
 
 ## Quick Start
 
@@ -202,17 +201,13 @@ The system supports flexible configuration for different deployment scenarios:
 
 ### Local Development Configuration
 
-For local development, use `configs/local.py` which configures:
+For local development, use `configs/cpu.py` which configures:
 - **CPU Inference**: PyTorch CPU-only and ONNX Runtime CPU configurations
-- **Local Model Paths**: Local file paths for ONNX models and configuration files
-- **Development Logging**: Console and file-based logging for debugging
 
 ### Production Configuration
 
 For production deployment, use `configs/cuda.py` which supports:
 - **GPU Acceleration**: CUDA 12.1 support for high-performance inference
-- **Production Logging**: AWS CloudWatch integration for centralized logging
-- **Optimized Settings**: Production-tuned parameters for maximum performance
 
 ### Configuration Components
 
@@ -241,7 +236,40 @@ audio2face/
 
 ### Testing
 
-The project includes comprehensive tests with pytest and async testing support:
+The project includes comprehensive tests with pytest and async testing support. Before running tests, you need to prepare the test input data.
+
+#### Test Data Preparation
+
+Download the required test files and organize them in the correct directory structure:
+
+1. **Create test input directory:**
+   ```bash
+   mkdir -p input
+   ```
+
+2. **Download test files:**
+   - **Test Audio:** [test_audio.wav](https://github.com/LazyBusyYang/CatStream/releases/download/a2f_cicd_files/test_audio.wav) - Download and save to `input/test_audio.wav`
+   - **Test Feature:** [test_feature.npy](https://github.com/LazyBusyYang/CatStream/releases/download/a2f_cicd_files/test_feature.npy) - Download and save to `input/test_feature.npy`
+
+3. **Ensure weights directory exists:**
+   ```bash
+   mkdir -p weights
+   ```
+   Make sure you have the ONNX model file `weights/unitalker_v0.4.0_base.onnx` (see [Data Preparation](#data-preparation) section).
+
+4. **Final directory structure should be:**
+   ```
+   ├─audio2face
+   ├─configs
+   ├─docs
+   ├─input
+   │  ├─test_audio.wav
+   │  └─test_feature.npy
+   └─weights
+      └─unitalker_v0.4.0_base.onnx
+   ```
+
+#### Running Tests
 
 ```bash
 # Run all tests
