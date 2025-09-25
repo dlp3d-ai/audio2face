@@ -1,0 +1,67 @@
+line-length = 88
+# Assume the minimum version is Python 3.12
+target-version = 'py310'
+fix = true
+exclude = ["*.pyi", "speech2motion/io/protobuf/*_pb2.py", "speech2motion/io/protobuf/*_pb2_grpc.py"]
+
+############################
+####### lint rules #######
+############################
+[lint]
+select = [
+  "E",    # pycodestyle: Error
+  "W",    # pycodestyle: Warning
+  "F",    # Pyflakes
+  "PLE",  # pylint: Error
+  "B",    # flake8-bugbear
+  "TC",   # flake8-type-checking
+  "I",    # isort
+  "T20",  # flake8-print
+  "PERF", # Perflint
+  "RUF",  # Ruff-specific rules
+  "TID",  # flake8-tidy-imports
+  "UP",   # pyupgrade
+  # "SIM",  # flake8-simplify
+]
+# `B008` (function-call-in-default-argument)
+# `B009` (get-attr-with-constant)
+# `UP030` (format-literals)
+# `UP032` (f-string)
+# `RUF001` (unnecessary-lambda)
+# `RUF002` (Docstring contains FULLWIDTH COMMA)
+# `TID252` (Prefer absolute imports)
+ignore = ["B008", "B009", "UP030", "UP032", "RUF001", "TID252", "RUF002"]
+unfixable = [
+  "F401", # unused imports
+  "F841", # unused variables
+]
+
+[lint.per-file-ignores]
+# `T20` (print statements)
+# `UP036` (outdated-version-block)
+"cli/*" = ["T20", "UP036"]
+"scripts/*" = ["T20", "UP036"]
+
+[lint.isort]
+known-third-party = []
+known-first-party = []
+
+[lint.pep8-naming]
+# Allow Pydantic's `@validator` decorator to trigger class method treatment.
+classmethod-decorators = ["classmethod", "pydantic.validator"]
+
+[lint.pycodestyle]
+ignore-overlong-task-comments = true
+
+[lint.flake8-tidy-imports.banned-api]
+# `TID251` (banned-api) configurations
+"sqlalchemy".msg = "Use SQLModel instead"
+"requests".msg = "Use httpx instead"
+"fastapi.HTTPException".msg = "Use ApiHTTPException from src.exceptions instead"
+
+############################
+####### format rules #######
+############################
+[format]
+quote-style = "single"
+indent-style = "space"

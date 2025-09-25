@@ -1,0 +1,51 @@
+[project]
+name = "audio2face"
+version = "2.0.0"
+description = "Service for audio2face animation generation"
+authors = [{ name = "LazyBusyYang", email = "gaoyang_cn@outlook.com" }]
+readme = "README.md"
+requires-python = ">=3.10,<3.13"
+# please install torch and onnxruntime(-gpu) manually
+dependencies = [
+    "fastapi==0.115.8",
+    "numpy",
+    "python-multipart",
+    "tqdm",
+    "uvicorn",
+    "websockets",
+    "jinja2",
+    "protobuf==6.31.1",
+    "setuptools-protobuf",
+    "librosa",
+    "transformers",
+    "boto3",
+    "watchtower"
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff",
+    "pre-commit",
+    "pytest",
+    "pytest-asyncio",
+    "toml-to-requirements"
+]
+
+[project.urls]
+repository = "https://github.com/dlp3d-ai/audio2face"
+
+[build-system]
+requires = ["setuptools>=45", "setuptools-scm", "setuptools-protobuf"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["audio2face"]
+
+[tool.setuptools_scm]
+
+[tool.pytest]
+asyncio_default_fixture_loop_scope = "function"
+
+[tool.setuptools-protobuf]
+# protoc --python_out=. audio2face/data_structures/audio2face_v1.proto
+protobufs = ["audio2face/data_structures/audio2face_v1.proto"]

@@ -1,0 +1,15 @@
+[
+    "EyeBlinkLeft", "EyeBlinkRight", "EyeSquintLeft", "EyeSquintRight",
+    "EyeLookDownLeft", "EyeLookDownRight", "EyeLookInLeft", "EyeLookInRight",
+    "EyeWideLeft", "EyeWideRight", "EyeLookOutLeft", "EyeLookOutRight",
+    "EyeLookUpLeft", "EyeLookUpRight", "BrowDownLeft", "BrowDownRight",
+    "BrowInnerUp", "BrowOuterUpLeft", "BrowOuterUpRight", "JawOpen",
+    "MouthClose", "JawLeft", "JawRight", "JawForward", "MouthUpperUpLeft",
+    "MouthUpperUpRight", "MouthLowerDownLeft", "MouthLowerDownRight",
+    "MouthRollUpper", "MouthRollLower", "MouthSmileLeft", "MouthSmileRight",
+    "MouthDimpleLeft", "MouthDimpleRight", "MouthStretchLeft",
+    "MouthStretchRight", "MouthFrownLeft", "MouthFrownRight", "MouthPressLeft",
+    "MouthPressRight", "MouthPucker", "MouthFunnel", "MouthLeft", "MouthRight",
+    "MouthShrugLower", "MouthShrugUpper", "NoseSneerLeft", "NoseSneerRight",
+    "CheekPuff", "CheekSquintLeft", "CheekSquintRight"
+]

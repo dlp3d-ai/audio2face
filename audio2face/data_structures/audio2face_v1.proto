@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package audio2face_blendshape_v1;
+
+message Audio2FaceBlendshapeV1Request {
+  string class_name = 1;
+  string request_id = 2;
+  int32 sample_rate = 3;
+  int32 sample_width = 4;
+  int32 n_channels = 5;
+  string profile_name = 6;
+  string offset_name = 7;
+  int32 response_chunk_n_frames = 8;
+  bytes pcm_bytes = 9;
+}
+
+message Audio2FaceBlendshapeV1Response {
+  string class_name = 1;
+  repeated string blendshape_names = 2;
+  string dtype = 3;
+  bytes data = 4;
+}
