@@ -60,7 +60,7 @@ class LinearExpBlend(BasePostprocess):
                 msg = f'Failed to read bs_names, file {bs_names} does not exist.'
                 self.logger.error(msg)
                 raise FileNotFoundError(msg)
-            with open(bs_names) as f:
+            with open(bs_names, encoding='utf-8') as f:
                 self.bs_names = json.load(f)
         else:
             self.bs_names = bs_names
