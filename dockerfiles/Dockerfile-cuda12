@@ -72,5 +72,8 @@ RUN . /opt/miniconda/etc/profile.d/conda.sh && \
 # Set working directory
 WORKDIR /workspace/audio2face
 
+# Set env var
+ENV LD_LIBRARY_PATH=/opt/miniconda/pkgs/pytorch-2.4.1-py3.10_cuda12.1_cudnn9.1.0_0/lib/python3.10/site-packages/torch/lib:/usr/local/nvidia/lib:/usr/local/nvidia/lib64
+
 # Set entrypoint
 ENTRYPOINT ["/bin/bash", "-c", "source /opt/miniconda/etc/profile.d/conda.sh && conda activate audio2face && python main.py"]

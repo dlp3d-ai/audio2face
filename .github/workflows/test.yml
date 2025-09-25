@@ -1,0 +1,39 @@
+name: Test
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    container:
+      image: dockersenseyang/dlp3d_audio2face:latest
+      options: --entrypoint ""
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+    - name: Download test input
+      run: |
+        mkdir -p input
+        cd input
+        curl -LjO https://github.com/LazyBusyYang/CatStream/releases/download/a2f_cicd_files/test_audio.wav
+        curl -LjO https://github.com/LazyBusyYang/CatStream/releases/download/a2f_cicd_files/test_feature.npy
+        cd ..
+        ls input -la
+    - name: Download weight
+      run: |
+        mkdir -p weights
+        cd weights
+        curl -LjO https://github.com/LazyBusyYang/CatStream/releases/download/a2f_cicd_files/unitalker_v0.4.0_base.onnx
+        cd ..
+        ls weights -la
+    - name: Run tests
+      run: |
+        pwd
+        bash -c "source /opt/miniconda/etc/profile.d/conda.sh && conda activate audio2face && pip install . && PYTHONPATH=/__w/audio2face/audio2face pytest tests --log-cli-level=ERROR"
+    - name: Cat pytest log
+      run: |
+        cat logs/pytest.log
