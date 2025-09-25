@@ -36,7 +36,7 @@ class Offset(BasePostprocess):
         self.offset_json_paths = offset_json_paths
         self.offset_dicts = dict()
         for name, offset_json_path in self.offset_json_paths.items():
-            with open(offset_json_path) as f:
+            with open(offset_json_path, encoding='utf-8') as f:
                 self.offset_dicts[name] = json.load(f)
 
     def __call__(self, face_clip: FaceClip, offset_name: str, **kwargs) -> FaceClip:

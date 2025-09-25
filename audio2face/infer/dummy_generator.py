@@ -54,7 +54,7 @@ class DummyGenerator(Super):
                        f'path: {blendshape_names}')
                 self.logger.error(msg)
                 raise FileNotFoundError(msg)
-            with open(blendshape_names) as f:
+            with open(blendshape_names, encoding='utf-8') as f:
                 self.blendshape_names = json.load(f)
         elif isinstance(blendshape_names, list):
             self.blendshape_names = blendshape_names

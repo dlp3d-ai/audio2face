@@ -50,7 +50,7 @@ class Rename(BasePostprocess):
                        'does not exist.')
                 self.logger.error(msg)
                 raise FileNotFoundError(msg)
-            with open(bs_names_mapping) as f:
+            with open(bs_names_mapping, encoding='utf-8') as f:
                 self.bs_names_mapping = json.load(f)
         else:
             self.bs_names_mapping = bs_names_mapping

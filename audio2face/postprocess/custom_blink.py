@@ -58,7 +58,7 @@ class CustomBlink(BasePostprocess):
         self.blink_animation = dict()
         for name, blink_json_path in self.blink_json_paths.items():
             self.blink_animation[name] = dict()
-            with open(blink_json_path) as f:
+            with open(blink_json_path, encoding='utf-8') as f:
                 json_dict = json.load(f)
             bs_values = np.array(json_dict['blendshape_values'])
             n_frames = bs_values.shape[0]
