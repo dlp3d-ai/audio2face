@@ -35,7 +35,7 @@ jobs:
     - name: Run tests
       run: |
         pwd
-        bash -c "source /opt/miniconda/etc/profile.d/conda.sh && conda activate audio2face && pip install . && PYTHONPATH=/__w/audio2face/audio2face pytest tests --log-cli-level=ERROR"
+        /opt/venv/bin/pip install . && PYTHONPATH=/__w/audio2face/audio2face /opt/venv/bin/python -m pytest tests --log-cli-level=ERROR
     - name: Cat pytest log
       run: |
         cat logs/pytest.log
