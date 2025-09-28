@@ -12,6 +12,7 @@
 - [Configuration](#configuration)
 - [Development](#development)
 - [Citation](#citation)
+- [License](#license)
 
 ## Overview
 
@@ -309,6 +310,12 @@ This project uses the UniTalker algorithm for facial animation generation:
 ```
 
 **Reference**: [UniTalker GitHub Repository](https://github.com/X-niper/UniTalker) - ECCV 2024
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+The MIT License is a permissive free software license that allows you to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the software with minimal restrictions. The only requirement is that the original copyright notice and license text must be included in all copies or substantial portions of the software.
 
 ---
 
