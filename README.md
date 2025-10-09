@@ -103,7 +103,7 @@ docker run -it \
 **Windows:**
 ```cmd
 # Pull and run the pre-built image
-docker run -it -p 18083:18083 -v .\weights:/workspace/audio2face/weights ockersenseyang/dlp3d_audio2face:latest
+docker run -it -p 18083:18083 -v .\weights:/workspace/audio2face/weights dockersenseyang/dlp3d_audio2face:latest
 ```
 
 **Command Explanation:**
