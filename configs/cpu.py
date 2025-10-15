@@ -31,7 +31,24 @@ python_api_cfg = dict(
         'Ani-default': [
             'unitalker_clip',
             'arkit_to_mmd',
-            'mouth_scale',],
+            'kq_jaw_open_blend',
+            'mouth_scale',
+            'kq_offset',
+            'kq_emotional_blink'],
+        'HT-default': [
+            'unitalker_clip',
+            'arkit_to_mmd',
+            'kq_jaw_open_blend',
+            'mouth_scale',
+            'kq_offset',
+            'kq_emotional_blink'],
+        'FNN-default': [
+            'unitalker_clip',
+            'arkit_to_mmd',
+            'kq_jaw_open_blend',
+            'mouth_scale',
+            'kq_offset',
+            'kq_emotional_blink'],
 
     },
     feature_extractor_cfg=dict(
