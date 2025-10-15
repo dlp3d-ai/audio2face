@@ -29,7 +29,10 @@ RUN apt-get update && \
         libffi-dev \
         libsqlite3-dev \
         wget \
-        libbz2-dev && \
+        libbz2-dev \
+        liblzma-dev \
+        tk-dev \
+        uuid-dev && \
     cd /tmp && \
     wget https://www.python.org/ftp/python/3.10.12/Python-3.10.12.tgz && \
     tar -xf Python-3.10.12.tgz && \
