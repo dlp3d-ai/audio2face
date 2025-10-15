@@ -64,7 +64,7 @@ You need Python 3.10 or higher to run this project. This document provides one m
 wget -q https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 
 # Install Miniconda
-bash Miniconda3-latest-Linux-x86_64.sh -b -p /opt/miniconda
+bash Miniconda3-latest-Linux-x86_64.sh
 
 # Clean up installer
 rm -f Miniconda3-latest-Linux-x86_64.sh
