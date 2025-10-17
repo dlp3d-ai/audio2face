@@ -98,7 +98,7 @@ async def test_streaming_audio2face_v1():
             ),
             linear_exp_blend=dict(
                 type='LinearExpBlend',
-                name='kq_jaw_open_blend',
+                name='mmd_jaw_open_blend',
                 offset=-0.106,
                 normalize_reference=0.35,
                 exponential_strength=4,
@@ -108,16 +108,16 @@ async def test_streaming_audio2face_v1():
             emotion_offset=dict(
                 type='Offset',
                 offset_json_paths=dict(
-                    anger_1='configs/KQ-default_offset/anger_1.json',
-                    disgust_1='configs/KQ-default_offset/disgust_1.json',
+                    anger_1='configs/blendshapes_offset/anger_1.json',
+                    disgust_1='configs/blendshapes_offset/disgust_1.json',
                 ),
             ),
             emotion_blink=dict(
                 type='CustomBlink',
-                default_blink_json_path='configs/KQ-default_blink/neutral.json',
+                default_blink_json_path='configs/blink_anim/neutral.json',
                 blink_json_paths=dict(
-                    anger_1='configs/KQ-default_blink/anger_1.json',
-                    disgust_1='configs/KQ-default_blink/disgust_1.json',
+                    anger_1='configs/blink_anim/anger_1.json',
+                    disgust_1='configs/blink_anim/disgust_1.json',
                 ),
             )
         ),
