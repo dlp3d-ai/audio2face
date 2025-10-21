@@ -90,27 +90,27 @@ The easiest way to get started with Audio2Face is using the pre-built Docker ima
 docker run -it \
   -p 18083:18083 \
   -v $(pwd)/weights:/workspace/audio2face/weights \
-  dockersenseyang/dlp3d_audio2face:latest
+  dlp3d/audio2face:latest
 
 # Or run with CUDA support (requires NVIDIA GPU with Docker support)
 docker run -it \
   --gpus all \
   -p 18083:18083 \
   -v $(pwd)/weights:/workspace/audio2face/weights \
-  dockersenseyang/dlp3d_audio2face:latest-cuda12
+  dlp3d/audio2face:latest-cuda12
 ```
 
 **Windows:**
 ```cmd
 # Pull and run the pre-built image
-docker run -it -p 18083:18083 -v .\weights:/workspace/audio2face/weights dockersenseyang/dlp3d_audio2face:latest
+docker run -it -p 18083:18083 -v .\weights:/workspace/audio2face/weights dlp3d/audio2face:latest
 ```
 
 **Command Explanation:**
 - `-p 18083:18083`: Maps the container's port 18083 to your host machine's port 18083
 - `-v $(pwd)/weights:/workspace/audio2face/weights` (Linux/macOS): Mounts your local `weights` directory to the container's weights directory
 - `-v .\weights:/workspace/audio2face/weights` (Windows): Mounts your local `weights` directory to the container's weights directory
-- `dockersenseyang/dlp3d_audio2face:latest`: Uses the pre-built public image
+- `dlp3d/audio2face:latest`: Uses the pre-built public image
 
 **Prerequisites:**
 - Ensure you have a `weights` directory in your project root

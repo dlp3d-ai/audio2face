@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     
     container:
-      image: dockersenseyang/dlp3d_audio2face:latest
+      image: dlp3d/audio2face:latest
       options: --entrypoint ""
     
     steps:
