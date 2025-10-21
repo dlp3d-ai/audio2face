@@ -91,27 +91,27 @@ Audio2Face是一个实时音频到面部表情动画服务，将流式音频输�
 docker run -it \
   -p 18083:18083 \
   -v $(pwd)/weights:/workspace/audio2face/weights \
-  dockersenseyang/dlp3d_audio2face:latest
+  dlp3d/audio2face:latest
 
 # 或使用CUDA支持运行（需要支持Docker的NVIDIA GPU）
 docker run -it \
   --gpus all \
   -p 18083:18083 \
   -v $(pwd)/weights:/workspace/audio2face/weights \
-  dockersenseyang/dlp3d_audio2face:latest-cuda12
+  dlp3d/audio2face:latest-cuda12
 ```
 
 **Windows：**
 ```cmd
 # 拉取并运行预构建镜像
-docker run -it -p 18083:18083 -v .\weights:/workspace/audio2face/weights dockersenseyang/dlp3d_audio2face:latest
+docker run -it -p 18083:18083 -v .\weights:/workspace/audio2face/weights dlp3d/audio2face:latest
 ```
 
 **命令说明：**
 - `-p 18083:18083`：将容器的18083端口映射到主机的18083端口
 - `-v $(pwd)/weights:/workspace/audio2face/weights`（Linux/macOS）：将本地`weights`目录挂载到容器的weights目录
 - `-v .\weights:/workspace/audio2face/weights`（Windows）：将本地`weights`目录挂载到容器的weights目录
-- `dockersenseyang/dlp3d_audio2face:latest`：使用预构建的公共镜像
+- `dlp3d/audio2face:latest`：使用预构建的公共镜像
 
 **前提条件：**
 - 确保项目根目录中有`weights`目录

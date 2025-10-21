@@ -16,23 +16,40 @@ RUN apt-get update && \
     ln -fs /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
     apt-get autoclean
 
-# Install Python 3.10 from deadsnakes PPA
+# Install Python 3.10 from source
 RUN apt-get update && \
-    apt-get install -y software-properties-common && \
-    add-apt-repository ppa:deadsnakes/ppa && \
-    apt-get update && \
     apt-get install -y \
-        python3.10 \
-        python3.10-dev \
-        python3.10-venv \
-        python3-pip && \
+        build-essential \
+        zlib1g-dev \
+        libncurses5-dev \
+        libgdbm-dev \
+        libnss3-dev \
+        libssl-dev \
+        libreadline-dev \
+        libffi-dev \
+        libsqlite3-dev \
+        wget \
+        libbz2-dev \
+        liblzma-dev \
+        tk-dev \
+        uuid-dev && \
+    cd /tmp && \
+    wget https://www.python.org/ftp/python/3.10.12/Python-3.10.12.tgz && \
+    tar -xf Python-3.10.12.tgz && \
+    cd Python-3.10.12 && \
+    ./configure --enable-optimizations --prefix=/usr/local && \
+    make -j $(nproc) && \
+    make altinstall && \
+    cd / && \
+    rm -rf /tmp/Python-3.10.12* && \
     apt-get autoclean && \
     rm -rf /var/lib/apt/lists/*
 
-# Create virtual environment
-RUN python3.10 -m venv /opt/venv && \
-    /opt/venv/bin/pip install --upgrade pip setuptools wheel && \
-    /opt/venv/bin/pip cache purge
+# Create symlinks for python3.10
+RUN ln -sf /usr/local/bin/python3.10 /usr/local/bin/python3 && \
+    ln -sf /usr/local/bin/python3.10 /usr/local/bin/python && \
+    ln -sf /usr/local/bin/pip3.10 /usr/local/bin/pip3 && \
+    ln -sf /usr/local/bin/pip3.10 /usr/local/bin/pip
 
 # Download protoc
 RUN mkdir -p /opt/protoc && cd /opt/protoc && \
@@ -42,6 +59,11 @@ RUN mkdir -p /opt/protoc && cd /opt/protoc && \
     && chmod +x bin/protoc && \
     ln -s /opt/protoc/bin/protoc /usr/bin/protoc && \
     protoc --version
+
+# Create virtual environment
+RUN python3.10 -m venv /opt/venv && \
+    /opt/venv/bin/pip install --upgrade pip setuptools wheel && \
+    /opt/venv/bin/pip cache purge
 
 # Update PATH to use virtual environment
 ENV PATH="/opt/venv/bin:$PATH"

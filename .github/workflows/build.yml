@@ -32,7 +32,7 @@ jobs:
         context: .
         file: ./dockerfiles/Dockerfile-cpu
         push: true
-        tags: dockersenseyang/dlp3d_audio2face:${{ steps.tag.outputs.tag }}-cpu
+        tags: dlp3d/audio2face:${{ steps.tag.outputs.tag }}-cpu
         cache-from: type=gha
         cache-to: type=gha,mode=max
 
@@ -62,6 +62,6 @@ jobs:
         context: .
         file: ./dockerfiles/Dockerfile-cuda12
         push: true
-        tags: dockersenseyang/dlp3d_audio2face:${{ steps.tag.outputs.tag }}-cuda12
+        tags: dlp3d/audio2face:${{ steps.tag.outputs.tag }}-cuda12
         cache-from: type=gha
         cache-to: type=gha,mode=max
