@@ -5,31 +5,31 @@ This document provides step-by-step instructions for setting up the audio2face d
 ## Table of Contents
 
 - [Linux Environment Setup](#linux-environment-setup)
-  - [Prerequisites](#prerequisites)
-  - [Step 1: Install Protocol Buffers Compiler](#step-1-install-protocol-buffers-compiler)
-  - [Step 2: Set Up Python](#step-2-set-up-python)
-  - [Step 3: Install PyTorch and ONNX Runtime](#step-3-install-pytorch-and-onnx-runtime)
-  - [Step 4: Install the Project](#step-4-install-the-project)
-  - [Step 5: Verify Installation](#step-5-verify-installation)
-  - [Environment Activation](#environment-activation)
+  - [Linux Prerequisites](#linux-prerequisites)
+  - [Linux Step 1: Install Protocol Buffers Compiler](#linux-step-1-install-protocol-buffers-compiler)
+  - [Linux Step 2: Set Up Python](#linux-step-2-set-up-python)
+  - [Linux Step 3: Install PyTorch and ONNX Runtime](#linux-step-3-install-pytorch-and-onnx-runtime)
+  - [Linux Step 4: Install the Project](#linux-step-4-install-the-project)
+  - [Linux Step 5: Verify Installation](#linux-step-5-verify-installation)
+  - [Linux Environment Activation](#linux-environment-activation)
 - [Windows Environment Setup](#windows-environment-setup)
-  - [Prerequisites](#prerequisites-1)
-  - [Step 1: Install Protocol Buffers Compiler](#step-1-install-protocol-buffers-compiler-1)
-  - [Step 2: Set Up Python](#step-2-set-up-python-1)
-  - [Step 3: Install PyTorch and ONNX Runtime](#step-3-install-pytorch-and-onnx-runtime-1)
-  - [Step 4: Install the Project](#step-4-install-the-project-1)
-  - [Step 5: Verify Installation](#step-5-verify-installation-1)
-  - [Environment Activation](#environment-activation-1)
+  - [Windows Prerequisites](#windows-prerequisites)
+  - [Windows Step 1: Install Protocol Buffers Compiler](#windows-step-1-install-protocol-buffers-compiler)
+  - [Windows Step 2: Set Up Python](#windows-step-2-set-up-python)
+  - [Windows Step 3: Install PyTorch and ONNX Runtime](#windows-step-3-install-pytorch-and-onnx-runtime)
+  - [Windows Step 4: Install the Project](#windows-step-4-install-the-project)
+  - [Windows Step 5: Verify Installation](#windows-step-5-verify-installation)
+  - [Windows Environment Activation](#windows-environment-activation)
 
 ## Linux Environment Setup
 
-### Prerequisites
+### Linux Prerequisites
 
 Before starting, ensure you have the following system requirements:
 - Ubuntu 20.04 or compatible Linux distribution
 - Internet connection for downloading packages
 
-### Step 1: Install Protocol Buffers Compiler
+### Linux Step 1: Install Protocol Buffers Compiler
 
 Download and install protoc for protocol buffer compilation:
 
@@ -53,7 +53,7 @@ bin/protoc --version
 cd ..
 ```
 
-### Step 2: Set Up Python
+### Linux Step 2: Set Up Python
 
 You need Python 3.10 or higher to run this project. This document provides one method using conda for Python installation as a reference.
 
@@ -81,7 +81,7 @@ conda activate audio2face
 
 ```
 
-### Step 3: Install PyTorch and ONNX Runtime
+### Linux Step 3: Install PyTorch and ONNX Runtime
 
 The audio2face service supports both CPU and GPU inference. Choose the appropriate installation method based on your hardware configuration.
 
@@ -117,7 +117,7 @@ pip install onnxruntime-gpu==1.22.0
 
 **Note**: GPU inference requires NVIDIA GPU with CUDA 12.1 support. If you don't have a compatible GPU, use Option A for CPU inference.
 
-### Step 4: Install the Project
+### Linux Step 4: Install the Project
 
 Install the audio2face package:
 
@@ -132,7 +132,7 @@ conda activate audio2face
 pip install .
 ```
 
-### Step 5: Verify Installation
+### Linux Step 5: Verify Installation
 
 Test that everything is working correctly:
 
@@ -147,7 +147,7 @@ python -c "import audio2face.apis; print('audio2face.apis imported successfully'
 python main.py --help
 ```
 
-### Environment Activation
+### Linux Environment Activation
 
 To work with the audio2face project, always activate the conda environment first:
 
@@ -162,13 +162,13 @@ conda activate audio2face
 
 ## Windows Environment Setup
 
-### Prerequisites
+### Windows Prerequisites
 
 Before starting, ensure you have the following system requirements:
 - Windows 10/11 or compatible Windows distribution
 - Internet connection for downloading packages
 
-### Step 1: Install Protocol Buffers Compiler
+### Windows Step 1: Install Protocol Buffers Compiler
 
 Download and install protoc for protocol buffer compilation:
 
@@ -182,12 +182,12 @@ Download and install protoc for protocol buffer compilation:
    - Ensure the executable file is located at: `protoc\bin\protoc.exe`
 
 3. **Verify installation:**
-   ```cmd
+   ```bash
    # Open Command Prompt in your project directory
    protoc\bin\protoc.exe --version
    ```
 
-### Step 2: Set Up Python
+### Windows Step 2: Set Up Python
 
 You need Python 3.10 or higher to run this project. This document provides one method using conda for Python installation as a reference.
 
@@ -200,7 +200,7 @@ You need Python 3.10 or higher to run this project. This document provides one m
    - **Important**: During installation, make sure to check "Add Miniconda3 to my PATH environment variable" or add the Miniconda3/Scripts directory to the PATH environment variable manually to enable conda commands from any terminal
 
 2. **Create and Activate Environment:**
-   ```cmd
+   ```bash
    # Create audio2face environment with Python 3.10
    conda create -n audio2face python=3.10 -y
    
@@ -208,11 +208,11 @@ You need Python 3.10 or higher to run this project. This document provides one m
    conda activate audio2face
    ```
 
-### Step 3: Install PyTorch and ONNX Runtime
+### Windows Step 3: Install PyTorch and ONNX Runtime
 
 Install PyTorch and ONNX Runtime with CPU support for Windows:
 
-```cmd
+```bash
 # Activate the environment
 conda activate audio2face
 
@@ -223,11 +223,11 @@ conda install pytorch==2.4.1 torchaudio==2.4.1 cpuonly -c pytorch
 pip install onnxruntime==1.22.0
 ```
 
-### Step 4: Install the Project
+### Windows Step 4: Install the Project
 
 Install the audio2face package:
 
-```cmd
+```bash
 # Ensure you're in the project root directory
 cd /path/to/audio2face
 
@@ -241,11 +241,11 @@ set PATH=%PATH%;%CD%\protoc\bin
 pip install .
 ```
 
-### Step 5: Verify Installation
+### Windows Step 5: Verify Installation
 
 Test that everything is working correctly:
 
-```cmd
+```bash
 # Activate the environment
 conda activate audio2face
 
@@ -256,11 +256,11 @@ python -c "import audio2face.apis; print('audio2face.apis imported successfully'
 python main.py --help
 ```
 
-### Environment Activation
+### Windows Environment Activation
 
 To work with the audio2face project, always activate the conda environment first:
 
-```cmd
+```bash
 # Activate the environment
 conda activate audio2face
 
