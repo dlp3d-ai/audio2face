@@ -1,6 +1,6 @@
 # Audio2Face
 
-> **English Documentation** | [中文文档](docs/README_CN.md)
+> **English Documentation** | [中文文档](README_CN.md)
 
 ## Table of Contents
 
