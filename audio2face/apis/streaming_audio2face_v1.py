@@ -215,7 +215,19 @@ class StreamingAudio2FaceV1(Super):
             offset_name = chunk_body.offset_name
             profile_name = \
                 self.request_space[chunk_body.request_id]['profile_name']
-            postprocess_names = self.profiles[profile_name]
+            if profile_name in self.profiles:
+                postprocess_names = self.profiles[profile_name]
+            else:
+                if len(self.profiles) == 0:
+                    msg = 'No profiles found, cannot ' +\
+                        'generate facial expression animation.'
+                    self.logger.error(msg)
+                    raise ValueError(msg)
+                default_key = next(iter(self.profiles))
+                postprocess_names = self.profiles[default_key]
+                self.logger.warning(
+                    f'Profile {profile_name} not found, ' +
+                    f'using default profile {default_key}')
             old_pcm_bytes = \
                 self.request_space[chunk_body.request_id]['pcm_bytes']
             last_split_time = \
