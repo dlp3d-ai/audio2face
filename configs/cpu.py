@@ -12,6 +12,14 @@ __logger_cfg__ = dict(
     logger_path="logs/server.log"
 )
 __fps__ = 30
+__default_profile__ = [
+    'unitalker_clip',
+    'arkit_to_mmd',
+    'mmd_jaw_open_blend',
+    'mouth_scale',
+    'mmd_offset',
+    'mmd_emotional_blink'
+]
 response_chunk_n_frames = 10
 max_workers = 4
 enable_cors = True
@@ -21,35 +29,12 @@ logger_cfg = __logger_cfg__
 python_api_cfg = dict(
     type='StreamingAudio2FaceV1',
     profiles={
-        'KQ-default': [
-            'unitalker_clip',
-            'arkit_to_mmd',
-            'mmd_jaw_open_blend',
-            'mouth_scale',
-            'mmd_offset',
-            'mmd_emotional_blink'],
-        'Ani-default': [
-            'unitalker_clip',
-            'arkit_to_mmd',
-            'mmd_jaw_open_blend',
-            'mouth_scale',
-            'mmd_offset',
-            'mmd_emotional_blink'],
-        'HT-default': [
-            'unitalker_clip',
-            'arkit_to_mmd',
-            'mmd_jaw_open_blend',
-            'mouth_scale',
-            'mmd_offset',
-            'mmd_emotional_blink'],
-        'FNN-default': [
-            'unitalker_clip',
-            'arkit_to_mmd',
-            'mmd_jaw_open_blend',
-            'mouth_scale',
-            'mmd_offset',
-            'mmd_emotional_blink'],
-
+        'KQ-default': __default_profile__,
+        'Ani-default': __default_profile__,
+        'HT-default': __default_profile__,
+        'FNN-default': __default_profile__,
+        'KL-default': __default_profile__,
+        'NXD-default': __default_profile__
     },
     feature_extractor_cfg=dict(
         type='TorchFeatureExtractor',
