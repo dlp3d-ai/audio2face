@@ -215,7 +215,19 @@ class StreamingAudio2FaceV1(Super):
             offset_name = chunk_body.offset_name
             profile_name = \
                 self.request_space[chunk_body.request_id]['profile_name']
-            postprocess_names = self.profiles[profile_name]
+            if profile_name in self.profiles:
+                postprocess_names = self.profiles[profile_name]
+            else:
+                if len(self.profiles) == 0:
+                    msg = 'No profiles found, cannot ' +\
+                        'generate facial expression animation.'
+                    self.logger.error(msg)
+                    raise ValueError(msg)
+                default_key = next(iter(self.profiles))
+                postprocess_names = self.profiles[default_key]
+                self.logger.warning(
+                    f'Profile {profile_name} not found, ' +
+                    f'using default profile {default_key}')
             old_pcm_bytes = \
                 self.request_space[chunk_body.request_id]['pcm_bytes']
             last_split_time = \
@@ -301,11 +313,23 @@ class StreamingAudio2FaceV1(Super):
         self.request_space[chunk_end.request_id]['last_update_time'] = cur_time
         old_pcm_bytes = \
             self.request_space[chunk_end.request_id]['pcm_bytes']
+        profile_name = \
+            self.request_space[chunk_end.request_id]['profile_name']
+        if profile_name in self.profiles:
+            postprocess_names = self.profiles[profile_name]
+        else:
+            if len(self.profiles) == 0:
+                msg = 'No profiles found, cannot ' +\
+                    'generate facial expression animation.'
+                self.logger.error(msg)
+                raise ValueError(msg)
+            default_key = next(iter(self.profiles))
+            postprocess_names = self.profiles[default_key]
+            self.logger.warning(
+                f'Profile {profile_name} not found, ' +
+                f'using default profile {default_key}')
         if len(old_pcm_bytes) > 0:
             loop = asyncio.get_event_loop()
-            profile_name = \
-                self.request_space[chunk_end.request_id]['profile_name']
-            postprocess_names = self.profiles[profile_name]
             offset_name = \
                 self.request_space[chunk_end.request_id]['offset_name']
             last_split_time = \
@@ -368,9 +392,6 @@ class StreamingAudio2FaceV1(Super):
             self.logger.warning(
                 f'Request {chunk_end.request_id} at end has no unprocessed audio data.')
         await self.request_space[chunk_end.request_id]['callback'](None)
-        profile_name = \
-            self.request_space[chunk_end.request_id]['profile_name']
-        postprocess_names = self.profiles[profile_name]
         for postprocess_name in postprocess_names:
             self.postprocessors[postprocess_name].clean_stream(chunk_end.request_id)
         self.request_space.pop(chunk_end.request_id)
